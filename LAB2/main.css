@@ -1,0 +1,56 @@
+body {
+    background-color: #f0f8ff; /* 전체 배경 색 */
+    font-family: 'Arial', sans-serif; /* 글꼴 */
+    font-size: 16px; /* 글씨 크기 */
+    color: #333; /* 전체 글자 색 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 30px;
+    font-size: 28px;
+    color: #222;
+    /* 빨간 테두리 제거됨 */
+}
+
+form {
+    background-color: #ffffff;
+    width: 400px; /* 폼 너비 */
+    height: auto; /* 높이는 내용에 맞게 */
+    margin: 30px auto; /* 수직 30px, 수평 중앙 정렬 */
+    padding: 20px; /* 내부 여백 */
+    border: 2px solid #cccccc; /* 테두리 */
+    text-align: left; /* 폼 내부 왼쪽 정렬 */
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+input, select {
+    width: 90%;
+    padding: 8px;
+    margin: 6px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+    margin: 10px 10px 0 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    background-color: lightgreen;
+    color: black;
+}
+
+button[type="button"] {
+    background-color: red;
+    color: white;
+}
