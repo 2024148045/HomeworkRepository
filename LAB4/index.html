@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>인프밍 영화 정보 사이트</title>
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>인프밍 영화 정보 사이트입니다.</h1>
+    <nav>
+      <a href="./index.html">메인페이지</a>
+      <a href="./login.html">로그인</a>
+      <a href="./signup.html">회원가입</a>
+    </nav>
+  </header>
+
+  <section class="search-bar">
+    <input type="text" id="keyword" placeholder="키워드를 입력하세요." />
+    <button onclick="filterMovies()">Filter results</button>
+  </section>
+
+  <main class="container">
+    <aside class="filter-box">
+      <h3>정렬 기준</h3>
+      <label><input type="radio" name="sort" value="ratingDesc" checked> 평점 내림차순</label><br>
+      <label><input type="radio" name="sort" value="ratingAsc"> 평점 오름차순</label><br>
+      <label><input type="radio" name="sort" value="releaseDesc"> 개봉 내림차순</label><br>
+      <label><input type="radio" name="sort" value="releaseAsc"> 개봉 오름차순</label>
+    </aside>
+
+    <section>
+      <h2>Movies</h2>
+      <div id="movieList" class="movie-list"></div>
+      <div id="loading">로딩 중...</div>
+    </section>
+  </main>
+
+  <script>
+  let movies = [];
+  let filteredMovies = [];
+  let currentIndex = 0;
+  const batchSize = 4;
+  let isLoading = false;
+
+  fetch('product.json')
+    .then(res => res.json())
+    .then(data => {
+      movies = data;
+      filterMovies();
+    });
+
+  function filterMovies() {
+    const keyword = document.getElementById('keyword').value.toLowerCase();
+    const sortValue = document.querySelector('input[name="sort"]:checked').value;
+
+    filteredMovies = movies.filter(movie =>
+      movie.title.toLowerCase().includes(keyword)
+    );
+
+    switch (sortValue) {
+      case 'ratingDesc':
+        filteredMovies.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'ratingAsc':
+        filteredMovies.sort((a, b) => a.rating - b.rating);
+        break;
+      case 'releaseDesc':
+        filteredMovies.sort((a, b) => new Date(b.release) - new Date(a.release));
+        break;
+      case 'releaseAsc':
+        filteredMovies.sort((a, b) => new Date(a.release) - new Date(b.release));
+        break;
+    }
+
+    currentIndex = 0;
+    document.getElementById('movieList').innerHTML = '';
+    renderNextMovies();
+
+    // ✅ 스크롤이 없을 경우 강제 추가 렌더링
+    setTimeout(() => {
+      if (document.documentElement.scrollHeight <= document.documentElement.clientHeight) {
+        renderNextMovies();
+      }
+    }, 100);
+  }
+
+  function renderNextMovies() {
+    const list = document.getElementById('movieList');
+    const nextBatch = filteredMovies.slice(currentIndex, currentIndex + batchSize);
+
+    if (nextBatch.length === 0) {
+      document.getElementById('loading').style.display = 'none';
+      return;
+    }
+
+    nextBatch.forEach(movie => {
+      const card = document.createElement('div');
+      card.className = 'movie-card';
+      card.innerHTML = `
+        <img src="${movie.poster}" alt="${movie.title}" />
+        <div class="movie-desc">줄거리:<br>${movie.description}</div>
+        <div class="movie-info">
+          <strong>${movie.title}</strong><br>
+          📅 ${movie.release}<br>
+          ⭐ ${movie.rating}/10
+        </div>
+      `;
+      list.appendChild(card);
+    });
+
+    currentIndex += batchSize;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (isLoading) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+      isLoading = true;
+      document.getElementById('loading').style.display = 'block';
+
+      setTimeout(() => {
+        renderNextMovies();
+        isLoading = false;
+
+        // 스크롤 더 필요한 경우 다시 확인
+        if (document.documentElement.scrollHeight <= document.documentElement.clientHeight) {
+          renderNextMovies();
+        }
+      }, 300);
+    }
+  });
+</script>
+
+</body>
+</html>
