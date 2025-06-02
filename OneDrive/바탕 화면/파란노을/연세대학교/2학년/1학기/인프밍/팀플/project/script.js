@@ -12,7 +12,7 @@ async function processImage() {
   const ocrResponse = await fetch("http://api.ocr.space/parse/image", {
     method: "POST",
     headers: {
-      "apikey": "K82637680588957"
+      "apikey": "OCR key"
     },
     body: new URLSearchParams({
       base64Image: base64Image,
