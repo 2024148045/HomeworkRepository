@@ -32,7 +32,7 @@ async function processImage() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer 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"
+      "Authorization": "Bearer Open api Key"
     },
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
