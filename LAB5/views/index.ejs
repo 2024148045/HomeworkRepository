@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>영화 정보</title>
+  <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div style="text-align:center; margin-bottom: 20px;">
+        <a href="/login">로그인</a> |
+        <a href="/signup">회원가입</a>
+    </div>
+    <h1>영화 정보 사이트</h1>
+    <form method="get" action="/">
+        <input type="text" name="keyword" value="<%= keyword %>" placeholder="영화 검색">
+        <select name="sort">
+        <option value="ratingDesc" <%= sort === 'ratingDesc' ? 'selected' : '' %>>평점 ↓</option>
+        <option value="ratingAsc" <%= sort === 'ratingAsc' ? 'selected' : '' %>>평점 ↑</option>
+        <option value="releaseDesc" <%= sort === 'releaseDesc' ? 'selected' : '' %>>개봉 ↓</option>
+        <option value="releaseAsc" <%= sort === 'releaseAsc' ? 'selected' : '' %>>개봉 ↑</option>
+        </select>
+        <button type="submit">검색</button>
+    </form>
+    <div class="movie-list">
+        <% movies.forEach(movie => { %>
+        <div class="movie-card">
+            <a href="/movies/<%= movie.movie_id %>">
+            <img src="<%= movie.movie_image %>" alt="<%= movie.movie_title %>" />
+            </a>
+            <strong><%= movie.movie_title %></strong><br>
+            📅 <%= movie.movie_release_date %><br>
+            ⭐ <%= movie.movie_rate %>/10
+        </div>
+        <% }); %>
+    </div>
+  </div>
+</body>
+</html>

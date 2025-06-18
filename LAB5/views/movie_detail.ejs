@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= movie.movie_title %> - 상세정보</title>
+  <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+  <a href="/">← 메인으로</a>
+  <h1><%= movie.movie_title %></h1>
+  <img src="<%= movie.movie_image %>" alt="<%= movie.movie_title %>" style="width:200px;">
+  <p><strong>개봉일:</strong> <%= movie.movie_release_date %></p>
+  <p><strong>평점:</strong> <%= movie.movie_rate %>/10</p>
+  <p><strong>줄거리:</strong><br> <%= movie.movie_overview %></p>
+
+  <hr>
+
+  <h3>댓글</h3>
+  <ul>
+    <% comments.forEach(c => { %>
+      <li><strong><%= c.user %>:</strong> <%= c.text %></li>
+    <% }) %>
+  </ul>
+
+  <form method="POST" action="/movies/<%= movie.movie_id %>/comment">
+    <input type="text" name="user" placeholder="닉네임" required><br>
+    <textarea name="text" placeholder="댓글 내용" required></textarea><br>
+    <button type="submit">댓글 등록</button>
+  </form>
+</body>
+</html>
